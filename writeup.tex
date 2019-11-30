@@ -1,0 +1,60 @@
+
+\documentclass{article}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage[scale=0.75,top=3cm]{geometry}
+
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\begin{document}
+
+
+\section*{Project Writeup}
+
+\section{Discussion}
+
+
+Hello, and welcome to my README for part 1 of the project. In this folder, there are several C++ source and header files that work together to read in an input COO matrix, convert it into CSR, and perform the Conjugate Gradient method on it to find a solution for the sparse matrix. 
+
+The files are broken into the following logic. The main.cpp/main.hpp pair takes care of file input and output, and calls on matrix conversion and the CG method. The COO2CSR pair does the matrix conversion, and the CGSolver pair implements the CG method following the pseudocode in the next section. To help the CGSolver file, there is a file pair named matvecops which defines matrix operations for use. Finally there is a defined makefile, which compiles the main.cpp file into the binary executable. It also contains a clean definition to remove object files and the executable.
+
+Splitting the logic in this manner was instructive and helped debugging. It was intuitive to split the program into these multiple header and source files, and I was able to cut down on redundant code. This was especially apparent when implementing the matvecops.cpp code. By defining the matrix operations in this helper file, they could be called efficiently to help out in CGSolver.cpp. The matrix operations were "mixed and matched", called upon one another in order to accomplish the calculations necessary. By defining the functions correctly with parameters and what was being passed in mind, I was able to decompose the challenge into more intuitive parts.
+
+\section{Conjugate Gradient (CG) Pseudo-code}
+
+Below, find the pseudo-code for the CG Algorithm:
+
+\begin{algorithm}
+\caption{Conjugate Gradient}
+\begin{algorithmic}[1]
+
+\State initialize u\textsubscript{0}
+\State r\textsubscript{0} = b - A u\textsubscript{0}
+\State L2normr0 = L2norm(r\textsubscript{0})
+\State p\textsubscript{0} = r\textsubscript{0}
+\State niter = 0
+
+\While {(niter $<$ nitermax)}
+\State {niter = niter + 1}
+\State {alpha = (r\textsubscript{n}\textsuperscript{T} r\textsubscript{n})/(p\textsubscript{n}\textsuperscript{T} A p\textsubscript{n})}
+\State {u\textsubscript{n+1} = u\textsubscript{n} + alpha\textsubscript{n} p\textsubscript{n}}
+\State {r\textsubscript{n+1} = r\textsubscript{n} - alpha\textsubscript{n} A p\textsubscript{n}}
+\State L2normr = L2normr(r\textsubscript{n+1}
+
+\If {L2normr/L2normr0 $<$ threshold}
+\State break
+\EndIf
+
+\State beta\textsubscript{n} = (r\textsubscript{n+1}\textsuperscript{T} r\textsubscript{n+1})/(r\textsubscript{n}\textsuperscript{T} r\textsubscript{n})
+\State p\textsubscript{n+1} = r\textsubscript{n+1} + beta\textsubscript{n} p\textsubscript{n}
+
+\EndWhile
+
+\end{algorithmic}
+\end{algorithm} 
+\end{document}
