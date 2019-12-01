@@ -30,6 +30,12 @@
     <ClCompile Include="matvecops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="heat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sparse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CGSolver.hpp">

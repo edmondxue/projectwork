@@ -14,11 +14,6 @@
  * tolerance, or -1 if the solver did not converge.
  */
 
-int CGSolver(std::vector<double> &val,
-             std::vector<int>    &row_ptr,
-             std::vector<int>    &col_idx,
-             std::vector<double> &b,
-             std::vector<double> &x,
-             double              tol);
+int CGSolver(SparseMatrix mat);
 
 #endif /* CGSOLVER_HPP */
