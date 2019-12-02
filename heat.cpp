@@ -14,6 +14,8 @@ class HeatEquation2D
 private:
 	SparseMatrix A;
 	std::vector<double> b, x;
+
+
 	double len, width, h;
 	double Tc, Th;
 
@@ -46,10 +48,21 @@ public:
 		
 		//first, resize the Sparse Matrix
 		//nrows and ncols are actually ndivs, add 1 to capture indices
-		const int nrows = len / h;
-		const int ncols = width / h;
+		//ncols = num unknowns = num interior + num periodic/2
+		//nrows = num equations = num unknowns?
+		const int nx = len / h;
+		const int ny = width / h;
 		
-		A.Resize(nrows, ncols);
+		const int n_unk = (nx - 1) * (ny - 1) + (nx - 1);
+		A.Resize(n_unk, n_unk);
+
+
+		////first, resize the Sparse Matrix
+		////nrows and ncols are actually ndivs, add 1 to capture indices
+		//const int ncols = len / h;
+		//const int nrows = width / h;
+
+		//A.Resize(nrows + 1, ncols + 1);
 
 
 		//two types of BC's: periodic and isothermal
@@ -57,31 +70,80 @@ public:
 		//first, isothermal:
 		
 		//top layer is all at Th
-		for (int col_ind = 0; col_ind < len; col_ind++)
-		{
-			A.AddEntry(0, col_ind, Th);
-		}
+		//for (int col_ind = 0; col_ind < len; col_ind++)
+		//{
+		//	A.AddEntry(0, col_ind, Th);
+		//}
 
-		//bottom layer defined as function Tx
-		double Tx;
+		////bottom layer defined as function Tx
+		//double Tx;
 
-		for (int col_ind = 0; col_ind < len; col_ind++)
-		{
-			Tx = -Tc * (exp(-10 * pow(col_ind - (len / 2), 2.0)) - 2);
-			A.AddEntry(width-1, col_ind, Tx);
-		}
+		//for (int col_ind = 0; col_ind < len; col_ind++)
+		//{
+		//	
+		//}
 		
 		//second, periodic:
 
 
 		//set const coeff
-		const 
-		//loop through all points i,j
-		for (int i = 0; i < ncols + 1; i++)
+		const double coeff = 1 / pow(h, 2.0);
+		////loop through all interior points i,j
+		//for (int i = 0; i < nrows + 1; i++)
+		//{
+		//	for (int j = 0; j < ncols + 1; j++)
+		//	{
+		//		//for isothermal BC's
+		//		//top
+		//		if (i == 0)
+		//		{
+		//			//at the j'th 
+		//			A.AddEntry(j, j, Th);
+		//		}
+		//		//bottom
+		//		if (i == nrows)
+		//		{
+		//			double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
+		//			A.AddEntry(width - 1, j, Tx);
+		//		}
+
+
+		//		//check boundaries
+		//		if((i-1) < 0
+		//		A.AddEntry(coeff, )
+		//	}
+		//}
+
+		//form initial product vector b
+		std::fill(b.begin(), b.end(), 0);
+
+		//form initial soln guess vector x
+		std::fill(x.begin(), x.end(), 1);
+
+
+		for (int j = 1; j < ny; j++)
 		{
-			for (int j = 0; j < nrows + 1; j++)
+			for (int i = 1; i < nx; i++)
 			{
-				A.AddEntry()
+				// if i - 1 = 0, i - 1 periodic BC
+				// if i + 1 = nx, i + 1 periodic BC
+				if (i)
+				{
+					A.AddEntry();
+				}
+				//if j - 1 = 0, j - 1 bottom isotherm BC
+				if ((j - 1) == 0)
+				{
+					double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
+					b[nx * j + i] -= coeff * Tx;
+				}
+				//if j + 1 = ny, j + 1 top isotherm BC
+				if ((j + 1) == ny)
+				{
+					b[nx * j + i] -= coeff * Th;
+				}
+				
+
 			}
 		}
 
