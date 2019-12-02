@@ -45,10 +45,10 @@ public:
 		}
 		
 		//first, resize the Sparse Matrix
-		int nrows = len / h;
-		int ncols = width / h;
-		//nrows and ncols are actually ndivs
-		//should add 1 to capture indices
+		//nrows and ncols are actually ndivs, add 1 to capture indices
+		const int nrows = len / h;
+		const int ncols = width / h;
+		
 		A.Resize(nrows, ncols);
 
 
@@ -72,6 +72,18 @@ public:
 		}
 		
 		//second, periodic:
+
+
+		//set const coeff
+		const 
+		//loop through all points i,j
+		for (int i = 0; i < ncols + 1; i++)
+		{
+			for (int j = 0; j < nrows + 1; j++)
+			{
+				A.AddEntry()
+			}
+		}
 
 
 	}

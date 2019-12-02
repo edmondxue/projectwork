@@ -17,16 +17,16 @@ class SparseMatrix
 
   public:
     /* Method to modify sparse matrix dimensions */
-    void Resize(int nrows, int ncols);
+    void Resize(const int nrows, const int ncols);
 
     /* Method to add entry to matrix in COO format */
-    void AddEntry(int i, int j, double val);
+    void AddEntry(const int i, const int j, const double val);
 
     /* Method to convert COO matrix to CSR format using provided function */
     void ConvertToCSR();
 
     /* Method to perform sparse matrix vector multiplication using CSR formatted matrix */
-    std::vector<double> MulVec(std::vector<double> &vec);
+    std::vector<double> MulVec(std::vector<double> const& vec);
 
     /* TODO: Add any additional public methods you need */
     
