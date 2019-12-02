@@ -1,3 +1,4 @@
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -12,6 +13,9 @@ class HeatEquation2D
 private:
 	SparseMatrix A;
 	std::vector<double> b, x;
+	double len, width, h;
+	double Tc, Th;
+
 
 	/* TODO: Add any additional private data attributes and/or methods you need */
 
@@ -23,19 +27,13 @@ public:
 		if (f.is_open())
 		{
 
-			int row_ind, col_ind;
-			float value;
+			//read first row into geometry
+			f >> this->len >> this->width >> this->h;
 
-			//read first row into sizes
-			f >> rowsize >> colsize;
+			//read second row into temps
+			f >> this->Tc >> this->Th;
 
-			while (f >> row_ind >> col_ind >> value)
-			{
-				val.push_back(value);
-				i_idx.push_back(row_ind);
-				j_idx.push_back(col_ind);
-
-			}
+			//close file
 			f.close();
 
 		}
@@ -44,6 +42,12 @@ public:
 			std::cerr << "ERROR: Failed to open file" << std::endl;
 			return 0;
 		}
+
+		//two types of BC's: periodic and isothermal
+
+		//first isothermal:
+
+
 	}
 
 	/* Method to solve system using CGsolver */
