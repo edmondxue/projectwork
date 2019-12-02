@@ -155,20 +155,30 @@ public:
 				}
 
 
+				//normal top/bottom,  not near isotherm
+				if  ((j - 1) != 0 and (j + 1) != ny)
+				{
+					A.AddEntry(Ai, Aj + nx, coeff);
+					A.AddEntry(Ai, Aj - nx, coeff);
+				}
 				//if j - 1 = 0, j - 1 bottom pt isotherm BC
-				if ((j - 1) == 0)
+				else if ((j - 1) == 0)
 				{
 					//add Tx to b, don't add any to A
 					double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
 					b[Ai] -= coeff * Tx;
+					//normal top
+					A.AddEntry(Ai, Aj + nx, coeff);
 				}
 				//if j + 1 = ny, j + 1 top pt isotherm BC
-				if ((j + 1) == ny)
+				else if ((j + 1) == ny)
 				{
 					//add Th to b, don't add any to A
 					b[Ai] -= coeff * Th;
+					//normal bottom
+					A.AddEntry(Ai, Aj - nx, coeff);
 				}
-				
+					
 				//always account for term of current point
 				A.AddEntry(Ai, Aj, -4*coeff);
 
