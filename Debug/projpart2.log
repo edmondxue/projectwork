@@ -1,47 +1,17 @@
 ﻿  CGSolver.cpp
   COO2CSR.cpp
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(89,31): error C2146: syntax error: missing ')' before identifier 'and'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(89,31): error C3861: 'and': identifier not found
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(89,52): error C2059: syntax error: ')'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(90,13): error C2059: syntax error: ';'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,3): error C2059: syntax error: 'for'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,26): error C2143: syntax error: missing ')' before ';'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,30): error C2143: syntax error: missing ';' before '<'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,40): error C2143: syntax error: missing ';' before '++'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,40): error C2086: 'int i': redefinition
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96): message : see declaration of 'i'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,42): error C2059: syntax error: ')'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,44): error C2143: syntax error: missing ';' before '{'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96,44): error C2447: '{': missing function header (old-style formal list?)
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(99,3): error C2466: cannot allocate an array of constant size 0
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(99,14): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(99,15): error C2440: 'initializing': cannot convert from 'int' to 'int [0]'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(99,12): message : There are no conversions to array types, although there are conversions to references or pointers to arrays
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,3): error C2059: syntax error: 'for'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,26): error C2143: syntax error: missing ')' before ';'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,30): error C2143: syntax error: missing ';' before '<'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,30): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,30): error C2086: 'int i': redefinition
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96): message : see declaration of 'i'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,40): error C2143: syntax error: missing ';' before '++'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,40): error C2086: 'int i': redefinition
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(96): message : see declaration of 'i'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,42): error C2059: syntax error: ')'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,44): error C2143: syntax error: missing ';' before '{'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(103,44): error C2447: '{': missing function header (old-style formal list?)
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,8): error C3927: '->': trailing return type is not allowed after a non-function declarator
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,8): error C3484: syntax error: expected '->' before the return type
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,15): error C3613: missing return type after '->' ('int' assumed)
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,3): error C2040: 'i_idx': 'int' differs in levels of indirection from 'int [0]'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(107,9): error C2146: syntax error: missing ';' before identifier 'resize'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(109,3): error C2059: syntax error: 'delete'
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(110,1): error C2059: syntax error: '}'
+  heat.cpp
+C:\Users\edmon\source\repos\projectwork\CGSolver.hpp(17,14): error C2065: 'SparseMatrix': undeclared identifier
+C:\Users\edmon\source\repos\projectwork\CGSolver.hpp(17,27): error C2146: syntax error: missing ')' before identifier 'mat'
+C:\Users\edmon\source\repos\projectwork\heat.cpp(10,1): error C2011: 'HeatEquation2D': 'class' type redefinition
   main.cpp
   mainp1.cpp
+C:\Users\edmon\source\repos\projectwork\heat.hpp(9): message : see declaration of 'HeatEquation2D'
+C:\Users\edmon\source\repos\projectwork\CGSolver.hpp(17,14): error C2065: 'SparseMatrix': undeclared identifier
+C:\Users\edmon\source\repos\projectwork\CGSolver.hpp(17,27): error C2146: syntax error: missing ')' before identifier 'mat'
   matvecops.cpp
+  sparse.cpp
+C:\Users\edmon\source\repos\projectwork\mainp1.cpp(78,13): error C3861: 'CGSolver': identifier not found
+C:\Users\edmon\source\repos\projectwork\sparse.cpp(6,1): error C2011: 'SparseMatrix': 'class' type redefinition
   Generating Code...
-C:\Users\edmon\source\repos\projectwork\COO2CSR.cpp(110,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\edmon\source\repos\projectwork\sparse.hpp(6): message : see declaration of 'SparseMatrix'

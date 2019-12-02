@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "matvecops.hpp"
+#include "sparse.hpp"
 
 /* Function that implements the CG algorithm for a linear system
  *
@@ -13,12 +14,7 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-int CGSolver(std::vector<double> &val,
-             std::vector<int>    &row_ptr,
-             std::vector<int>    &col_idx,
-             std::vector<double> &b,
-             std::vector<double> &x,
-             double              tol)
+int CGSolver(SparseMatrix mat, double tol)
 {
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;

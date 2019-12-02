@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "sparse.hpp"
+
 /* Function that implements the CG algorithm for a linear system
  *
  * Ax = b
@@ -14,6 +16,6 @@
  * tolerance, or -1 if the solver did not converge.
  */
 
-int CGSolver(SparseMatrix mat);
+int CGSolver(SparseMatrix mat, double tol);
 
 #endif /* CGSOLVER_HPP */
