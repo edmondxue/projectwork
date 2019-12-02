@@ -1,5 +1,6 @@
-#include <iostream>
+#include <cmath>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -42,10 +43,35 @@ public:
 			std::cerr << "ERROR: Failed to open file" << std::endl;
 			return 0;
 		}
+		
+		//first, resize the Sparse Matrix
+		int nrows = len / h;
+		int ncols = width / h;
+		//nrows and ncols are actually ndivs
+		//should add 1 to capture indices
+		A.Resize(nrows, ncols);
+
 
 		//two types of BC's: periodic and isothermal
 
-		//first isothermal:
+		//first, isothermal:
+		
+		//top layer is all at Th
+		for (int col_ind = 0; col_ind < len; col_ind++)
+		{
+			A.AddEntry(0, col_ind, Th);
+		}
+
+		//bottom layer defined as function Tx
+		double Tx;
+
+		for (int col_ind = 0; col_ind < len; col_ind++)
+		{
+			Tx = -Tc * (exp(-10 * pow(col_ind - (len / 2), 2.0)) - 2);
+			A.AddEntry(width-1, col_ind, Tx);
+		}
+		
+		//second, periodic:
 
 
 	}
@@ -58,7 +84,7 @@ public:
 		CGSolver(this->A, tol);
 		return 0;
 	}
-
+	x
 	/* TODO: Add any additional public methods you need */
 
 };
