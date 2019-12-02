@@ -120,29 +120,57 @@ public:
 		//form initial soln guess vector x
 		std::fill(x.begin(), x.end(), 1);
 
+		//vars for adding to A
+		//int Ai_R, Aj_R, Ai_L, Aj_L, Ai_U, Aj_U, Ai_D, Aj_D;
+		int Ai, Aj;
 
 		for (int j = 1; j < ny; j++)
 		{
-			for (int i = 1; i < nx; i++)
+			for (int i = 1; i < nx + 1; i++)
 			{
-				// if i - 1 = 0, i - 1 periodic BC
-				// if i + 1 = nx, i + 1 periodic BC
-				if (i)
+				//translation of i,j position to A's i,j
+				Ai = nx * (j - 1) + i;
+				Aj = Ai;
+
+				//// if i - 1 = 0, i - 1 periodic BC
+				//if ((i - 1) == 0)
+				//{
+				//	//left side, loop to right side unkn
+				//	A.AddEntry();
+				//}
+
+				// if i = nx, curr on top of periodic BC
+				if (i == nx)
 				{
-					A.AddEntry();
+					//right side ref loops to i = 1
+					A.AddEntry(Ai, Aj - (nx - 1), coeff);
+					//left normal
+					A.AddEntry(Ai, Aj - 1, coeff);
 				}
-				//if j - 1 = 0, j - 1 bottom isotherm BC
+				//otherwise normal left/right
+				else
+				{
+					A.AddEntry(Ai, Aj - 1, coeff);
+					A.AddEntry(Ai, Aj + 1, coeff);
+				}
+
+
+				//if j - 1 = 0, j - 1 bottom pt isotherm BC
 				if ((j - 1) == 0)
 				{
+					//add Tx to b, don't add any to A
 					double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
-					b[nx * j + i] -= coeff * Tx;
+					b[Ai] -= coeff * Tx;
 				}
-				//if j + 1 = ny, j + 1 top isotherm BC
+				//if j + 1 = ny, j + 1 top pt isotherm BC
 				if ((j + 1) == ny)
 				{
-					b[nx * j + i] -= coeff * Th;
+					//add Th to b, don't add any to A
+					b[Ai] -= coeff * Th;
 				}
 				
+				//always account for term of current point
+				A.AddEntry(Ai, Aj, -4*coeff);
 
 			}
 		}
