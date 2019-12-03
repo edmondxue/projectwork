@@ -11,8 +11,6 @@ private:
 	std::vector<int> j_idx;
 	std::vector<double> a;
 
-	std::vector<int>::iterator iter;
-
 	/* TODO: Add any additional private data attributes and/or methods you need */
 
 

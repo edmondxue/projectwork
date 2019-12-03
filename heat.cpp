@@ -43,7 +43,7 @@ public:
 		else
 		{
 			std::cerr << "ERROR: Failed to open file" << std::endl;
-			return 0;
+			return 1;
 		}
 		
 		//first, resize the Sparse Matrix
@@ -185,7 +185,7 @@ public:
 			}
 		}
 
-
+		return 0;
 	}
 
 	/* Method to solve system using CGsolver */
@@ -194,9 +194,35 @@ public:
 		//set tolerance and call to CGSolver
 		double const tol = 1.0 * pow((double)10.0, -5);
 		CGSolver(this->A, tol);
+
+
+		std::ofstream outf(soln_prefix.c_str());
+		if (outf.is_open())
+		{
+			for (unsigned int i = 0; i < xvec.size(); i++)
+			{
+				//fix output format
+				outf << std::setprecision(5) << xvec[i] << "\n";
+			}
+			outf.close();
+		}
+		else
+		{
+			std::cerr << "ERROR: Failed to open output file" << std::endl;
+			return 0;
+		}
+
+		//output success or failure message
+		if (iter != -1)
+		{
+			std::cout << "SUCCESS: CG solver converged in " << iter << " iterations." << std::endl;
+		}
+		else
+		{
+			std::cout << "Solver Didn't Converge" << std::endl;
+		}
 		return 0;
 	}
-	x
 	/* TODO: Add any additional public methods you need */
 
 };

@@ -14,7 +14,7 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-int CGSolver(SparseMatrix mat, double tol)
+int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double>& x, const double tol)
 {
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
@@ -23,7 +23,7 @@ int CGSolver(SparseMatrix mat, double tol)
 
 	//begin CG algo
 	u = x;
-	r = vec_subtract(b, matvec_mult(val, row_ptr, col_idx, u));
+	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
 	p = r;
 	int niter = 0;
@@ -32,9 +32,9 @@ int CGSolver(SparseMatrix mat, double tol)
 	while(niter < nitermax)
 	{
 		niter += 1;
-		alpha = dot_prod(r, r)/dot_prod(p,matvec_mult(val, row_ptr, col_idx, p));
+		alpha = dot_prod(r, r)/dot_prod(p, mat.MulVec(p));
 		u_new = vec_add(u, constvec_mult(alpha,p));
-		r_new = vec_subtract(r, constvec_mult(alpha, matvec_mult(val, row_ptr, col_idx, p)));
+		r_new = vec_subtract(r, constvec_mult(alpha, mat.MulVec(p)));
 		L2normr = L2norm(r_new);
 
 		if(L2normr/L2normr0 < tol)
