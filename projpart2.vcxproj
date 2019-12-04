@@ -104,7 +104,6 @@
     <ClCompile Include="COO2CSR.cpp" />
     <ClCompile Include="heat.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainp1.cpp" />
     <ClCompile Include="matvecops.cpp" />
     <ClCompile Include="sparse.cpp" />
   </ItemGroup>

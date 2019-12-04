@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 
+#include "CGSolver.hpp"
 #include "matvecops.hpp"
 #include "sparse.hpp"
 
@@ -57,12 +58,17 @@ int CGSolver(SparseMatrix mat, std::vector<double> const& b,
 		u = u_new;
 		x = u_new;
 
-		//on 10th iteration, print out solution file
+		//on every 10th iteration, print out solution file
 		if (niter % 10 == 0)
 		{
 			printSolnFile(soln_prefix, x, niter);
 		}
+
+
 	}
+
+	//print the last iteration
+	printSolnFile(soln_prefix, x, niter);
 
 
 	//if converges, return number of iterations
