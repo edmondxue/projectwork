@@ -62,14 +62,14 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 		//on every 10th iteration, print out solution file
 		if (niter % 10 == 0)
 		{
-			printSolnFile(soln_prefix, x, niter, sys);
+			printSolnFile(soln_prefix, x, niter, mat, sys);
 		}
 
 
 	}
 
 	//print the last iteration
-	printSolnFile(soln_prefix, x, niter);
+	printSolnFile(soln_prefix, x, niter, mat, sys);
 
 
 	//if converges, return number of iterations
@@ -86,16 +86,25 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 	
 }
 
-int printSolnFile(const std::string soln_prefix,
-	std::vector<double> const& x, const int niter, HeatEquation2D const& sys)
+/*Function that fills in boundary conditions left out of A and prints the
+solution to a new file*/
+int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
+					const int niter, SparseMatrix& mat,  HeatEquation2D& sys)
 {
 	//format the niter for filename
 	std::stringstream niter_str;
 	niter_str << std::setw(4) << std::setfill('0') << niter;
 
-	//use the x vector to create a solution that contains the isothermal boundary points
+	/*use the x vector to create a solution that 
+	contains the isothermal, periodic boundary points*/
+	std::vector <double> soln;
+
 	double Tc = sys.getTemps()[0];
 	double Th = sys.getTemps()[1];
+
+	int nrows = mat.getDims()[0];
+	int ncols = mat.getDims()[1];
+
 
 	for (int x = 0; x < sys.)
 	double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);

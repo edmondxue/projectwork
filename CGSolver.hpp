@@ -15,11 +15,12 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-
 int CGSolver(SparseMatrix mat, std::vector<double> const& b,
 	std::vector<double>& x, const double tol, const std::string soln_prefix);
 
-int printSolnFile(const std::string soln_prefix,
-	std::vector<double> const& x, const int niter);
+/*Function that fills in boundary conditions left out of A and prints the 
+solution to a new file*/
+int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
+	const int niter, SparseMatrix& mat, HeatEquation2D& sys);
 
 #endif /* CGSOLVER_HPP */

@@ -28,7 +28,9 @@ class SparseMatrix
     /* Method to perform sparse matrix vector multiplication using CSR formatted matrix */
     std::vector<double> MulVec(std::vector<double> const& vec);
 
+	/* Method to return the dimensions of the sparse matrix*/
 	std::vector<int> getDims();
+
     /* TODO: Add any additional public methods you need */
     
 };
