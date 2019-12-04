@@ -15,8 +15,8 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-int CGSolver(SparseMatrix mat, std::vector<double> const& b,
-	std::vector<double>& x, const double tol, const std::string soln_prefix);
+int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
+	const double tol, const std::string soln_prefix, HeatEquation2D const& sys);
 
 /*Function that fills in boundary conditions left out of A and prints the 
 solution to a new file*/

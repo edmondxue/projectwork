@@ -91,8 +91,6 @@ solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 					const int niter, SparseMatrix& mat,  HeatEquation2D& sys)
 {
-
-
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
 	std::vector <double> soln;
@@ -107,15 +105,39 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	int nrows = mat.getDims()[0];
 	int ncols = mat.getDims()[1];
 
-	//fill in bottom BC Tx's
-	for (int x = 0; x < nrows; x++)
+	
+	for (int j = 0; j < nrows; j++)
 	{
-		Tx = -Tc * (exp(-10 * pow(x - (len / 2), 2.0)) - 2);
-		soln.push_back(Tx);
+		for (int i = 0; i < ncols; i++)
+		{
+			//if j = 0, fill in bottom BC Tx's
+			if (j == 0)
+			{
+				Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
+				soln.push_back(Tx);
+			}
+			//if j = nrows-1, fill in top BC Th's 
+			else if (j = nrows - 1)
+			{
+				soln.push_back(Th);
+			}
+			//otherwise it's an interior row
+			else
+			{
+				//first col interior, copj periodic BC
+				if (i == 0)
+				{
+					soln.push_back(x[(ncols - 1)]);
+				}
+				else
+				{
+					soln.push_back(x[i]);
+				}
+			}
+
+		}
 	}
-
-	//fill in interior points
-
+	
 
 	//format the niter for filename
 	std::stringstream niter_str;
