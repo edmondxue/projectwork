@@ -6,14 +6,14 @@
 
 
 	/* Method to modify sparse matrix dimensions */
-void SparseMatrix::Resize(const int nrows, const int ncols)
+void SparseMatrix::Resize(const int nrowdivs, const int ncoldivs)
 {
 	//the arguments that we pass in are divisions
 	//add 1 to capture indices
-	this->i_idx.resize(nrows+1);
-	this->j_idx.resize(ncols+1);
-	this->ncols = ncols;
-	this->nrows = nrows;
+	this->i_idx.resize(nrowdivs +1);
+	this->j_idx.resize(ncoldivs +1);
+	this->ncols = ncoldivs + 1;
+	this->nrows = nrowdivs + 1;
 }
 
 /* Method to add entry to matrix in COO format */

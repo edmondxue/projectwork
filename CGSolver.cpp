@@ -91,31 +91,43 @@ solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 					const int niter, SparseMatrix& mat,  HeatEquation2D& sys)
 {
-	//format the niter for filename
-	std::stringstream niter_str;
-	niter_str << std::setw(4) << std::setfill('0') << niter;
+
 
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
 	std::vector <double> soln;
 
+	//assign system, matrix properties
 	double Tc = sys.getTemps()[0];
 	double Th = sys.getTemps()[1];
+	double Tx;
+
+	double len = sys.getDims()[0];
 
 	int nrows = mat.getDims()[0];
 	int ncols = mat.getDims()[1];
 
+	//fill in bottom BC Tx's
+	for (int x = 0; x < nrows; x++)
+	{
+		Tx = -Tc * (exp(-10 * pow(x - (len / 2), 2.0)) - 2);
+		soln.push_back(Tx);
+	}
 
-	for (int x = 0; x < sys.)
-	double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
+	//fill in interior points
+
+
+	//format the niter for filename
+	std::stringstream niter_str;
+	niter_str << std::setw(4) << std::setfill('0') << niter;
 
 	std::ofstream outf(soln_prefix.c_str() + niter_str.str());
 	if (outf.is_open())
 	{
-		for (unsigned int i = 0; i < x.size(); i++)
+		for (unsigned int i = 0; i < soln.size(); i++)
 		{
 			//fix output format
-			outf << std::setprecision(5) << x[i] << "\n";
+			outf << std::setprecision(5) << soln[i] << "\n";
 		}
 		outf.close();
 	}

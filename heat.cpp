@@ -11,6 +11,22 @@
 
 
 /* Method to setup Ax=b system */
+
+/* A is built to remove calculations for those already known points. This includes
+   all isothermal boundary condition points and 1/2 of the periodic boundary
+   condition points.
+
+   Example:
+
+   Th Th Th Th Th
+   P  O  O  O  O
+   P  O  O  O  O
+   Tx Tx Tx Tx Tx
+
+   where those points marked O are included in A to be calculated, and other markings 
+   are left out to be calculated later.
+*/
+
 int HeatEquation2D::Setup(std::string inputfile)
 {
 	std::ifstream f(inputfile.c_str());
@@ -201,5 +217,16 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 std::vector<double> HeatEquation2D::getTemps()
 {
 	std::vector<double> temps = {this->Tc, this->Th};
+	
+	return temps;
 }
+
+/* Method to get length, width, h for the system;*/
+std::vector<double> HeatEquation2D::getDims()
+{
+	std::vector<double> dims = { this->len, this->width, this->h};
+
+	return dims;
+}
+
 	/* TODO: Add any additional public methods you need */
