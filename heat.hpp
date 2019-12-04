@@ -23,6 +23,9 @@ class HeatEquation2D
     /* Method to solve system using CGsolver */
     int Solve(std::string soln_prefix);
 
+	/* Method to get Tc and Th */
+	std::vector<double> getTemps();
+
     /* TODO: Add any additional public methods you need */
 
 };

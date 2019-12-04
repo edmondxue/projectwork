@@ -182,7 +182,7 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 	double const tol = 1.0 * pow((double)10.0, -5);
 	//int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double> & x, const double tol)
 	//implement negative definite (-A)u = -b
-	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix);
+	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix, this);
 
 
 	//output success or failure message
@@ -195,5 +195,11 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 		std::cout << "Solver Didn't Converge" << std::endl;
 	}
 	return 0;
+}
+
+/* Method to get Tc and Th */
+std::vector<double> HeatEquation2D::getTemps()
+{
+	std::vector<double> temps = {this->Tc, this->Th};
 }
 	/* TODO: Add any additional public methods you need */

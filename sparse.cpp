@@ -12,6 +12,8 @@ void SparseMatrix::Resize(const int nrows, const int ncols)
 	//add 1 to capture indices
 	this->i_idx.resize(nrows+1);
 	this->j_idx.resize(ncols+1);
+	this->ncols = ncols;
+	this->nrows = nrows;
 }
 
 /* Method to add entry to matrix in COO format */
@@ -38,4 +40,10 @@ std::vector<double> SparseMatrix::MulVec(std::vector<double> const& vec)
 	return matvec_mult(this->a, this->i_idx, this->j_idx, vec);
 }
 
+/* Method to return the dimensions of the sparse matrix*/
+std::vector<int> SparseMatrix::getDims()
+{
+	std::vector<int> dims = { this->nrows, this->ncols };
+	return dims;
+}
 /* TODO: Add any additional public methods you need */
