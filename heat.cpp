@@ -6,6 +6,7 @@
 
 #include "CGSolver.hpp"
 #include "heat.hpp"
+#include "matvecops.hpp"
 #include "sparse.hpp"
 
 
@@ -193,24 +194,10 @@ public:
 	{
 		//set tolerance and call to CGSolver
 		double const tol = 1.0 * pow((double)10.0, -5);
-		CGSolver(this->A, tol);
+		//int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double> & x, const double tol)
+		//implement negative definite (-A)u = -b
+		int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix);
 
-
-		std::ofstream outf(soln_prefix.c_str());
-		if (outf.is_open())
-		{
-			for (unsigned int i = 0; i < xvec.size(); i++)
-			{
-				//fix output format
-				outf << std::setprecision(5) << xvec[i] << "\n";
-			}
-			outf.close();
-		}
-		else
-		{
-			std::cerr << "ERROR: Failed to open output file" << std::endl;
-			return 0;
-		}
 
 		//output success or failure message
 		if (iter != -1)

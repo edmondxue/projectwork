@@ -1,4 +1,7 @@
+#include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 #include "matvecops.hpp"
@@ -14,18 +17,20 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double>& x, const double tol)
+int CGSolver(SparseMatrix mat, std::vector<double> const& b, 
+			std::vector<double>& x, const double tol, const std::string soln_prefix)
 {
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
 	double L2normr0, L2normr, alpha, beta;
-	bool flag = false;
+	bool converged = false;
 
 	//begin CG algo
 	u = x;
 	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
 	p = r;
+
 	int niter = 0;
 	const int nitermax = (int) b.size();
 
@@ -39,7 +44,7 @@ int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double>
 
 		if(L2normr/L2normr0 < tol)
 		{
-			flag = true;
+			converged = true;
 			break;
 		}
 
@@ -50,14 +55,19 @@ int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double>
 		r = r_new;
 		p = p_new;
 		u = u_new;
+		x = u_new;
+
+		//on 10th iteration, print out solution file
+		if (niter % 10 == 0)
+		{
+			printSolnFile(soln_prefix, x, niter);
+		}
 	}
 
 
-	//if converges, set solution vector to found solution
-	//return number of iterations
-	if (flag)
+	//if converges, return number of iterations
+	if (converged)
 	{
-		x = u_new;
 		return niter;
 	}
 	else
@@ -66,4 +76,30 @@ int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double>
 		return -1;
 	}
 
+	
+}
+
+int printSolnFile(const std::string soln_prefix, 
+	std::vector<double> const& x, const int niter)
+{
+	//format the niter for filename
+	std::stringstream niter_str;
+	niter_str << std::setw(4) << std::setfill('0') << niter;
+
+	std::ofstream outf(soln_prefix.c_str() + niter_str.str());
+	if (outf.is_open())
+	{
+		for (unsigned int i = 0; i < x.size(); i++)
+		{
+			//fix output format
+			outf << std::setprecision(5) << x[i] << "\n";
+		}
+		outf.close();
+	}
+	else
+	{
+		std::cerr << "ERROR: Failed to open output file" << std::endl;
+		return 1;
+	}
+	return 0;
 }
