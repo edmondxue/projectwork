@@ -22,16 +22,17 @@
 int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
 	const double tol, const std::string soln_prefix, HeatEquation2D const & sys)
 {
-	std::cout << "SOLVER";
+\
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
 	double L2normr0, L2normr, alpha, beta;
 	bool converged = false;
 
-	std::cout << "Before begin";
+	//first convert to CSR format
+	mat.ConvertToCSR();
+	
 	//begin CG algo
 	u = x;
-	mat.MulVec(u);
 	std::cout << "is it this";
 	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
@@ -43,6 +44,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 
 	while(niter < nitermax)
 	{
+		std::cout << "made it";
 		niter += 1;
 		alpha = dot_prod(r, r)/dot_prod(p, mat.MulVec(p));
 		u_new = vec_add(u, constvec_mult(alpha,p));

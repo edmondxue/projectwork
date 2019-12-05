@@ -1,7 +1,9 @@
+#include <iostream>
 #include <vector>
 #include <cmath>
 
 #include "matvecops.hpp"
+#include <algorithm>
 
 //do matrix subtraction between two vectors
 std::vector<double> vec_subtract(std::vector<double> const& x, std::vector<double> const& y)
@@ -34,7 +36,14 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 								std::vector<double> const& x)
 {
 	std::vector<double> prod (x.size());
+	
+	std::cout << "MATVECMULT";
+	std::cout << x.size() << " \n";
+	std::cout << row_ptr.size() << " \n";
+	std::cout << col_idx.size() << " \n";
+	std::cout << *max_element(row_ptr.begin(), row_ptr.end());
 
+	int count = 0;
 	//index of product should match corresponding row
 	//in csr, col index matches value index
 	//go across each row, delineated by row_ptr
@@ -43,7 +52,11 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 		for(int j = row_ptr[i]; j < row_ptr[i+1]; j++)
 		{
 			prod[i] += val[j] * x[col_idx[j]];
+			//prod.at(i) += val.at(j) * x.at(col_idx.at(j));
 		}
+
+		/*count++;
+		std::cout << count << " ";*/
 	}
 
 	return prod;

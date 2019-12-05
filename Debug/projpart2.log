@@ -1,4 +1,7 @@
-﻿  heat.cpp
-C:\Users\edmon\source\repos\projectwork\heat.cpp(108,15): error C2065: 'a': undeclared identifier
-C:\Users\edmon\source\repos\projectwork\heat.cpp(108,34): error C2065: 'i_idx': undeclared identifier
-C:\Users\edmon\source\repos\projectwork\heat.cpp(108,57): error C2065: 'j_idx': undeclared identifier
+﻿  CGSolver.cpp
+  heat.cpp
+  main.cpp
+  sparse.cpp
+  Generating Code...
+LINK : warning LNK4044: unrecognized option '/Za'; ignored
+  projpart2.vcxproj -> C:\Users\edmon\source\repos\projectwork\Debug\projpart2.exe

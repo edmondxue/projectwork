@@ -90,7 +90,7 @@ int HeatEquation2D::Setup(std::string inputfile)
 	//}
 
 	//form initial product vector b
-	this->b.resize((ny-1)*nx);
+	this->b.resize((ny - 1) * nx);
 	std::fill(this->b.begin(), this->b.end(), 0);
 
 
@@ -101,35 +101,34 @@ int HeatEquation2D::Setup(std::string inputfile)
 	//vars for adding to A
 	//int Ai_R, Aj_R, Ai_L, Aj_L, Ai_U, Aj_U, Ai_D, Aj_D;
 	int Ai, Aj;
-	int coun = 0;
 
 	std::cout << A.getDims()[0] << " " << A.getDims()[1] << "\n";
 	std::cout << nx << " " << ny << "\n";
 
-	for (int j = 1; j < ny - 1; j++)
+	for (int i = 0; i < nx; i++)
 	{
-		for (int i = 0; i < nx - 1; i++)
+		for (int j = 1; j < ny; j++)
 		{
-			coun++;
 			//translation of i,j position to A's i,j
 			Ai = nx * (j - 1) + i;
 			Aj = Ai;
 
-			//// if i - 1 = 0, i - 1 periodic BC
-			//if ((i - 1) == 0)
-			//{
-			//	//left side, loop to right side unkn
-			//	A.AddEntry();
-			//}
 
 			// if i = 0, curr on top of periodic BC
 			if (i == 0)
 			{
 				//right side normal
-				std::cout << i << " " << j;
 				A.AddEntry(Ai, Aj + 1, coeff);
 				//left side loops over to i = nx -1
 				A.AddEntry(Ai, Aj + (nx - 1), coeff);
+			}
+			// if i = nx - 1, right refers to periodic BC
+			else if (i == nx - 1)
+			{
+				//left side normal
+				A.AddEntry(Ai, Aj - 1, coeff);
+				//right side loops back to i = 0
+				A.AddEntry(Ai, Aj - (nx-1), coeff);
 			}
 			//otherwise normal left/right
 			else
@@ -149,7 +148,7 @@ int HeatEquation2D::Setup(std::string inputfile)
 			else if ((j - 1) == 0)
 			{
 				//add Tx to b, don't add any to A
-				double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
+				double Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
 				b[Ai] -= coeff * Tx;
 				//normal top
 				A.AddEntry(Ai, Aj + nx, coeff);
@@ -167,11 +166,20 @@ int HeatEquation2D::Setup(std::string inputfile)
 			//always account for term of current point
 			A.AddEntry(Ai, Aj, -4*coeff);
 
-			//std::cout << "vdf4";
-			if (coun > 7300)
-			std::cout << coun << " \n";
+
 		}
 	}
+
+	
+	//for (int i = 0; i < nx; i++)
+	//{
+	//	for (int j = 1; j < ny; j++)
+	//	{
+	//		A.AddEntry(to1D(i, j), to1D(i - 1, j), 1);
+
+	//	}
+	//}
+
 
 	return 0;
 }
@@ -218,5 +226,27 @@ std::vector<double> HeatEquation2D::getDims() const
 
 	return dims;
 }
+
+////translates i,j position in heat system to A's i,j
+//int to1D(int i, int j)
+//{
+//	return wrap(i) + nx * (j - 1);
+//}
+//
+////determines the value of i after wrapping
+//int wrap(int i)
+//{
+//	if (i == nx)
+//	{
+//		return 0;
+//	}
+//	if (i == -1)
+//	{
+//		return nx - 1;
+//	}
+//
+//	return i;
+//}
+
 
 	/* TODO: Add any additional public methods you need */
