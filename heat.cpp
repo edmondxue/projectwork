@@ -104,7 +104,7 @@ int HeatEquation2D::Setup(std::string inputfile)
 	int coun = 0;
 
 	std::cout << A.getDims()[0] << " " << A.getDims()[1] << "\n";
-	std::cout << nx << " " << ny;
+	std::cout << nx << " " << ny << "\n";
 
 	for (int j = 1; j < ny - 1; j++)
 	{
