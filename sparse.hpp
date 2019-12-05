@@ -29,7 +29,7 @@ class SparseMatrix
     std::vector<double> MulVec(std::vector<double> const& vec);
 
 	/* Method to return the dimensions of the sparse matrix*/
-	std::vector<int> getDims();
+	std::vector<int> getDims() const;
 
     /* TODO: Add any additional public methods you need */
     

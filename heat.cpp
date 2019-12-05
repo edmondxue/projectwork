@@ -18,10 +18,10 @@
 
    Example:
 
-   Th Th Th Th Th
-   P  O  O  O  O
-   P  O  O  O  O
-   Tx Tx Tx Tx Tx
+   Th Th Th Th ... Th
+   O  O  O  O  ... P
+   O  O  O  O  ... P
+   Tx Tx Tx Tx ... Tx
 
    where those points marked O are included in A to be calculated, and other markings 
    are left out to be calculated later.
@@ -118,19 +118,27 @@ int HeatEquation2D::Setup(std::string inputfile)
 	//}
 
 	//form initial product vector b
-	std::fill(b.begin(), b.end(), 0);
+	this->b.resize((ny-1)*nx);
+	std::fill(this->b.begin(), this->b.end(), 0);
+
 
 	//form initial soln guess vector x
-	std::fill(x.begin(), x.end(), 1);
+	this->x.resize((ny - 1) * nx);
+	std::fill(this->x.begin(), this->x.end(), 1);
 
 	//vars for adding to A
 	//int Ai_R, Aj_R, Ai_L, Aj_L, Ai_U, Aj_U, Ai_D, Aj_D;
 	int Ai, Aj;
+	int coun = 0;
 
-	for (int j = 1; j < ny; j++)
+	std::cout << A.getDims()[0] << " " << A.getDims()[1] << "\n";
+	std::cout << nx << " " << ny;
+
+	for (int j = 1; j < ny - 1; j++)
 	{
-		for (int i = 1; i < nx + 1; i++)
+		for (int i = 0; i < nx - 1; i++)
 		{
+			coun++;
 			//translation of i,j position to A's i,j
 			Ai = nx * (j - 1) + i;
 			Aj = Ai;
@@ -142,13 +150,14 @@ int HeatEquation2D::Setup(std::string inputfile)
 			//	A.AddEntry();
 			//}
 
-			// if i = nx, curr on top of periodic BC
-			if (i == nx)
+			// if i = 0, curr on top of periodic BC
+			if (i == 0)
 			{
-				//right side ref loops to i = 1
-				A.AddEntry(Ai, Aj - (nx - 1), coeff);
-				//left normal
-				A.AddEntry(Ai, Aj - 1, coeff);
+				//right side normal
+				std::cout << i << " " << j;
+				A.AddEntry(Ai, Aj + 1, coeff);
+				//left side loops over to i = nx -1
+				A.AddEntry(Ai, Aj + (nx - 1), coeff);
 			}
 			//otherwise normal left/right
 			else
@@ -182,9 +191,13 @@ int HeatEquation2D::Setup(std::string inputfile)
 				A.AddEntry(Ai, Aj - nx, coeff);
 			}
 					
+			//std::cout << "vdf3";
 			//always account for term of current point
 			A.AddEntry(Ai, Aj, -4*coeff);
 
+			//std::cout << "vdf4";
+			if (coun > 7300)
+			std::cout << coun << " \n";
 		}
 	}
 
@@ -194,11 +207,16 @@ int HeatEquation2D::Setup(std::string inputfile)
 /* Method to solve system using CGsolver */
 int HeatEquation2D::Solve(std::string soln_prefix)
 {
+
+	std::cout << "SETUP";
 	//set tolerance and call to CGSolver
 	double const tol = 1.0 * pow((double)10.0, -5);
-	//int CGSolver(SparseMatrix mat, std::vector<double> const& b, std::vector<double> & x, const double tol)
+	//int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x, 
+	//const double tol, const std::string soln_prefix, HeatEquation2D& sys)
+
 	//implement negative definite (-A)u = -b
-	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix, this);
+
+	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix, *this);
 
 
 	//output success or failure message
@@ -214,7 +232,7 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 }
 
 /* Method to get Tc and Th */
-std::vector<double> HeatEquation2D::getTemps()
+std::vector<double> HeatEquation2D::getTemps() const
 {
 	std::vector<double> temps = {this->Tc, this->Th};
 	
@@ -222,7 +240,7 @@ std::vector<double> HeatEquation2D::getTemps()
 }
 
 /* Method to get length, width, h for the system;*/
-std::vector<double> HeatEquation2D::getDims()
+std::vector<double> HeatEquation2D::getDims() const
 {
 	std::vector<double> dims = { this->len, this->width, this->h};
 

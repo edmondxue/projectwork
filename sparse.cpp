@@ -41,7 +41,7 @@ std::vector<double> SparseMatrix::MulVec(std::vector<double> const& vec)
 }
 
 /* Method to return the dimensions of the sparse matrix*/
-std::vector<int> SparseMatrix::getDims()
+std::vector<int> SparseMatrix::getDims() const
 {
 	std::vector<int> dims = { this->nrows, this->ncols };
 	return dims;

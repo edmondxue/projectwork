@@ -19,8 +19,8 @@
  * number of iterations to converge the solution to the specified
  * tolerance, or -1 if the solver did not converge.
  */
-int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x, 
-			const double tol, const std::string soln_prefix, HeatEquation2D const& sys)
+int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
+	const double tol, const std::string soln_prefix, HeatEquation2D const & sys)
 {
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
@@ -65,7 +65,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 			printSolnFile(soln_prefix, x, niter, mat, sys);
 		}
 
-
+		std::cout << niter;
 	}
 
 	//print the last iteration
@@ -89,7 +89,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 /*Function that fills in boundary conditions left out of A and prints the
 solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
-					const int niter, SparseMatrix& mat,  HeatEquation2D& sys)
+	const int niter, SparseMatrix& mat, HeatEquation2D const & sys)
 {
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
@@ -124,14 +124,14 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 			//otherwise it's an interior row
 			else
 			{
-				//first col interior, copj periodic BC
-				if (i == 0)
+				//last col interior, copy periodic BC
+				if (i == ncols - 1)
 				{
-					soln.push_back(x[(ncols - 1)]);
+					soln.push_back(x.at(j * ncols));
 				}
 				else
 				{
-					soln.push_back(x[i]);
+					soln.push_back(x.at(j * ncols + i));
 				}
 			}
 

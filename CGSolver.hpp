@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "heat.hpp"
 #include "sparse.hpp"
 
 /* Function that implements the CG algorithm for a linear system
@@ -16,11 +17,11 @@
  * tolerance, or -1 if the solver did not converge.
  */
 int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
-	const double tol, const std::string soln_prefix, HeatEquation2D const& sys);
+	const double tol, const std::string soln_prefix, HeatEquation2D const & sys);
 
 /*Function that fills in boundary conditions left out of A and prints the 
 solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
-	const int niter, SparseMatrix& mat, HeatEquation2D& sys);
+	const int niter, SparseMatrix& mat, HeatEquation2D const & sys);
 
 #endif /* CGSOLVER_HPP */

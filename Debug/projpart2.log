@@ -1,2 +1,6 @@
-﻿LINK : warning LNK4044: unrecognized option '/Za'; ignored
+﻿  CGSolver.cpp
+  heat.cpp
+  Generating Code...
+LINK : warning LNK4044: unrecognized option '/Za'; ignored
+LINK : warning LNK4044: unrecognized option '/Za'; ignored
   projpart2.vcxproj -> C:\Users\edmon\source\repos\projectwork\Debug\projpart2.exe

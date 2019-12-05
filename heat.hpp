@@ -12,10 +12,10 @@
 
    Example:
 
-   Th Th Th Th Th
-   P  O  O  O  O
-   P  O  O  O  O
-   Tx Tx Tx Tx Tx
+   Th Th Th Th ... Th
+   O  O  O  O  ... P
+   O  O  O  O  ... P
+   Tx Tx Tx Tx ... Tx
 
    where those points marked O are included in A to be calculated, and other markings
    are left out to be calculated later.
@@ -39,10 +39,10 @@ class HeatEquation2D
     int Solve(std::string soln_prefix);
 
 	/* Method to get Tc and Th */
-	std::vector<double> getTemps();
+	std::vector<double> getTemps() const;
 
 	/* Method to get length, width, h for the system;*/
-	std::vector<double> HeatEquation2D::getDims();
+	std::vector<double> HeatEquation2D::getDims() const;
 
     /* TODO: Add any additional public methods you need */
 
