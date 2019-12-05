@@ -56,37 +56,9 @@ int HeatEquation2D::Setup(std::string inputfile)
 	const int nx = (int) (len / h);
 	const int ny = (int) (width / h);
 		
-	const int n_unk = (int) ((nx - 1) * (ny - 1) + (nx - 1));
-	A.Resize(n_unk, n_unk);
+	//const int n_unk = (int) ((nx - 1) * (ny - 1) + (nx - 1));
+	A.Resize(nx, ny);
 
-
-	////first, resize the Sparse Matrix
-	////nrows and ncols are actually ndivs, add 1 to capture indices
-	//const int ncols = len / h;
-	//const int nrows = width / h;
-
-	//A.Resize(nrows + 1, ncols + 1);
-
-
-	//two types of BC's: periodic and isothermal
-
-	//first, isothermal:
-		
-	//top layer is all at Th
-	//for (int col_ind = 0; col_ind < len; col_ind++)
-	//{
-	//	A.AddEntry(0, col_ind, Th);
-	//}
-
-	////bottom layer defined as function Tx
-	//double Tx;
-
-	//for (int col_ind = 0; col_ind < len; col_ind++)
-	//{
-	//	
-	//}
-		
-	//second, periodic:
 
 
 	//set const coeff

@@ -22,17 +22,22 @@
 int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
 	const double tol, const std::string soln_prefix, HeatEquation2D const & sys)
 {
+	std::cout << "SOLVER";
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
 	double L2normr0, L2normr, alpha, beta;
 	bool converged = false;
 
+	std::cout << "Before begin";
 	//begin CG algo
 	u = x;
+	mat.MulVec(u);
+	std::cout << "is it this";
 	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
 	p = r;
 
+	std::cout << "set niter";
 	int niter = 0;
 	const int nitermax = (int) b.size();
 
@@ -44,6 +49,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 		r_new = vec_subtract(r, constvec_mult(alpha, mat.MulVec(p)));
 		L2normr = L2norm(r_new);
 
+		std::cout << " 1 \n";
 		if(L2normr/L2normr0 < tol)
 		{
 			converged = true;
@@ -58,6 +64,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 		p = p_new;
 		u = u_new;
 		x = u_new;
+		std::cout << " 2 \n";
 
 		//on every 10th iteration, print out solution file
 		if (niter % 10 == 0)
@@ -91,6 +98,7 @@ solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	const int niter, SparseMatrix& mat, HeatEquation2D const & sys)
 {
+	std::cout << " print";
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
 	std::vector <double> soln;
