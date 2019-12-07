@@ -33,25 +33,21 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 	
 	//begin CG algo
 	u = x;
-	std::cout << "is it this";
 	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
 	p = r;
 
-	std::cout << "set niter";
 	int niter = 0;
 	const int nitermax = (int) b.size();
 
 	while(niter < nitermax)
 	{
-		std::cout << "made it";
-		niter += 1;
+	
 		alpha = dot_prod(r, r)/dot_prod(p, mat.MulVec(p));
 		u_new = vec_add(u, constvec_mult(alpha,p));
 		r_new = vec_subtract(r, constvec_mult(alpha, mat.MulVec(p)));
 		L2normr = L2norm(r_new);
 
-		std::cout << " 1 \n";
 		if(L2normr/L2normr0 < tol)
 		{
 			converged = true;
@@ -66,7 +62,6 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 		p = p_new;
 		u = u_new;
 		x = u_new;
-		std::cout << " 2 \n";
 
 		//on every 10th iteration, print out solution file
 		if (niter % 10 == 0)
@@ -74,7 +69,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 			printSolnFile(soln_prefix, x, niter, mat, sys);
 		}
 
-		std::cout << niter;
+		niter += 1;
 	}
 
 	//print the last iteration
@@ -100,7 +95,6 @@ solution to a new file*/
 int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	const int niter, SparseMatrix& mat, HeatEquation2D const & sys)
 {
-	std::cout << " print";
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
 	std::vector <double> soln;
@@ -115,11 +109,16 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	int nrows = mat.getDims()[0];
 	int ncols = mat.getDims()[1];
 
-	
-	for (int j = 0; j < nrows; j++)
-	{
-		for (int i = 0; i < ncols; i++)
+
+	/*x vector of form: [u(0,1), u(1,1)..]
+	what this means is j is 1 greater than its reference
+
+	also, j and i order of looping matters*/
+	for (int j = 0; j <= nrows; j++)
+	{			
+		for (int i = 0; i <= ncols; i++)
 		{
+
 			//if j = 0, fill in bottom BC Tx's
 			if (j == 0)
 			{
@@ -127,7 +126,7 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 				soln.push_back(Tx);
 			}
 			//if j = nrows-1, fill in top BC Th's 
-			else if (j = nrows - 1)
+			else if (j == nrows - 1)
 			{
 				soln.push_back(Th);
 			}
@@ -137,23 +136,22 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 				//last col interior, copy periodic BC
 				if (i == ncols - 1)
 				{
-					soln.push_back(x.at(j * ncols));
+					soln.push_back(x[(j-1) * (ncols) + 1]);
 				}
 				else
 				{
-					soln.push_back(x.at(j * ncols + i));
+					soln.push_back(x[ncols * (j - 1) + i]);
 				}
 			}
 
 		}
 	}
 	
-
 	//format the niter for filename
 	std::stringstream niter_str;
 	niter_str << std::setw(4) << std::setfill('0') << niter;
 
-	std::ofstream outf(soln_prefix.c_str() + niter_str.str());
+	std::ofstream outf(soln_prefix.c_str() + niter_str.str() + "neg.txt");
 	if (outf.is_open())
 	{
 		for (unsigned int i = 0; i < soln.size(); i++)

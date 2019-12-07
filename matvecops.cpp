@@ -1,9 +1,9 @@
-#include <iostream>
-#include <vector>
 #include <cmath>
+#include <vector>
 
-#include "matvecops.hpp"
 #include <algorithm>
+#include "matvecops.hpp"
+
 
 //do matrix subtraction between two vectors
 std::vector<double> vec_subtract(std::vector<double> const& x, std::vector<double> const& y)
@@ -36,14 +36,7 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 								std::vector<double> const& x)
 {
 	std::vector<double> prod (x.size());
-	
-	std::cout << "MATVECMULT";
-	std::cout << x.size() << " \n";
-	std::cout << row_ptr.size() << " \n";
-	std::cout << col_idx.size() << " \n";
-	std::cout << *max_element(row_ptr.begin(), row_ptr.end());
 
-	int count = 0;
 	//index of product should match corresponding row
 	//in csr, col index matches value index
 	//go across each row, delineated by row_ptr
@@ -52,14 +45,21 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 		for(int j = row_ptr[i]; j < row_ptr[i+1]; j++)
 		{
 			prod[i] += val[j] * x[col_idx[j]];
-			//prod.at(i) += val.at(j) * x.at(col_idx.at(j));
 		}
-
-		/*count++;
-		std::cout << count << " ";*/
 	}
 
 	return prod;
+}
+
+//return vector product of CSR matrix and constant
+void matconst_mult(std::vector<double>& val, std::vector<int> const& row_ptr,
+					std::vector<int> const& col_idx, double const conval)
+{
+	for (unsigned int i = 0; i < val.size(); i++)
+	{
+		val[i] *= conval;
+	}
+
 }
 
 //return product of constant and a vector
@@ -68,9 +68,9 @@ std::vector<double> constvec_mult(double const con, std::vector<double> const& x
 	std::vector<double> prod (x.size());
 
 	for (unsigned int i = 0; i < x.size(); i++)
-	    {
-			prod[i] = con * x[i];
-	    }
+	{
+		prod[i] = con * x[i];
+	}
 
 	return prod;
 }

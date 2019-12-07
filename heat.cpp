@@ -90,21 +90,92 @@ int HeatEquation2D::Setup(std::string inputfile)
 	//}
 
 	//form initial product vector b
-	this->b.resize((ny - 1) * nx);
-	std::fill(this->b.begin(), this->b.end(), 0);
+	this->b.resize((ny - 1) * nx, 0);
+
+	std::cout << (ny - 1) * nx << " " << b.size();
+	//std::fill(this->b.begin(), this->b.end(), 0);
 
 
 	//form initial soln guess vector x
-	this->x.resize((ny - 1) * nx);
-	std::fill(this->x.begin(), this->x.end(), 1);
+	this->x.resize((ny - 1) * nx, 1);
+	//std::fill(this->x.begin(), this->x.end(), 1);
 
 	//vars for adding to A
-	//int Ai_R, Aj_R, Ai_L, Aj_L, Ai_U, Aj_U, Ai_D, Aj_D;
-	int Ai, Aj;
+	int Ai, Aj; // REMOVE
 
 	std::cout << A.getDims()[0] << " " << A.getDims()[1] << "\n";
 	std::cout << nx << " " << ny << "\n";
 
+	////loop through all points to be solved
+	//for (int i = 0; i < nx; i++)
+	//{
+	//	for (int j = 1; j < ny; j++)
+	//	{
+	//		//translation of i,j position to A's i,j
+	//		Ai = nx * (j - 1) + i;
+	//		Aj = Ai;
+
+
+	//		// if i = 0, curr on top of periodic BC
+	//		if (i == 0)
+	//		{
+	//			//right side normal
+	//			A.AddEntry(Ai, Aj + 1, 1);
+	//			//left side loops over to i = nx -1
+	//			A.AddEntry(Ai, Aj + (nx - 1), 1);
+	//		}
+	//		// if i = nx - 1, right refers to periodic BC
+	//		else if (i == nx - 1)
+	//		{
+	//			//left side normal
+	//			A.AddEntry(Ai, Aj - 1, 1);
+	//			//right side loops back to i = 0
+	//			A.AddEntry(Ai, Aj - (nx-1), 1);
+	//		}
+	//		//otherwise normal left/right
+	//		else
+	//		{
+	//			A.AddEntry(Ai, Aj - 1, 1);
+	//			A.AddEntry(Ai, Aj + 1, 1);
+	//		}
+
+
+	//		//normal top/bottom,  not near isotherm
+	//		if  ((j - 1) != 0 and (j + 1) != ny)
+	//		{
+	//			A.AddEntry(Ai, Aj + nx, 1);
+	//			A.AddEntry(Ai, Aj - nx, 1);
+	//		}
+	//		//if j - 1 = 0, j - 1 bottom pt isotherm BC
+	//		else if ((j - 1) == 0)
+	//		{
+	//			//add Tx to b, don't add any to A
+	//			double Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
+	//			//b[Ai] -= coeff * Tx;
+	//			b[Ai] -= Tx;
+	//			//normal top
+	//			A.AddEntry(Ai, Aj + nx, 1);
+	//		}
+	//		//if j + 1 = ny, j + 1 top pt isotherm BC
+	//		else if ((j + 1) == ny)
+	//		{
+	//			//add Th to b, don't add any to A
+	//			//b[Ai] -= coeff * Th;
+	//			b[Ai] -=  Th;
+	//			//normal bottom
+	//			A.AddEntry(Ai, Aj - nx, 1);
+	//		}
+	//				
+	//		//std::cout << "vdf3";
+	//		//always account for term of current point
+	//		A.AddEntry(Ai, Aj, -4*1);
+
+
+	//	}
+	//}
+
+
+	//loop through all points to be solved
 	for (int i = 0; i < nx; i++)
 	{
 		for (int j = 1; j < ny; j++)
@@ -113,72 +184,56 @@ int HeatEquation2D::Setup(std::string inputfile)
 			Ai = nx * (j - 1) + i;
 			Aj = Ai;
 
+			A.AddEntry(to1D(i, j, nx), to1D(i - 1, j, nx), 1);
+			A.AddEntry(to1D(i, j, nx), to1D(i + 1, j, nx), 1);
 
-			// if i = 0, curr on top of periodic BC
-			if (i == 0)
+			//check if lower isothermal boundary
+			if (j - 1 > 0)
 			{
-				//right side normal
-				A.AddEntry(Ai, Aj + 1, coeff);
-				//left side loops over to i = nx -1
-				A.AddEntry(Ai, Aj + (nx - 1), coeff);
+				//if not, normally add to A
+				A.AddEntry(to1D(i, j, nx), to1D(i, j-1, nx), 1);
 			}
-			// if i = nx - 1, right refers to periodic BC
-			else if (i == nx - 1)
-			{
-				//left side normal
-				A.AddEntry(Ai, Aj - 1, coeff);
-				//right side loops back to i = 0
-				A.AddEntry(Ai, Aj - (nx-1), coeff);
-			}
-			//otherwise normal left/right
 			else
 			{
-				A.AddEntry(Ai, Aj - 1, coeff);
-				A.AddEntry(Ai, Aj + 1, coeff);
-			}
-
-
-			//normal top/bottom,  not near isotherm
-			if  ((j - 1) != 0 and (j + 1) != ny)
-			{
-				A.AddEntry(Ai, Aj + nx, coeff);
-				A.AddEntry(Ai, Aj - nx, coeff);
-			}
-			//if j - 1 = 0, j - 1 bottom pt isotherm BC
-			else if ((j - 1) == 0)
-			{
-				//add Tx to b, don't add any to A
+				//if it is, add Tx to b
 				double Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
-				b[Ai] -= coeff * Tx;
-				//normal top
-				A.AddEntry(Ai, Aj + nx, coeff);
+				this->b[to1D(i, j, nx)] -= Tx;
 			}
-			//if j + 1 = ny, j + 1 top pt isotherm BC
-			else if ((j + 1) == ny)
+
+			//check if upper isothermal boundary
+			if (j + 1 < ny)
 			{
-				//add Th to b, don't add any to A
-				b[Ai] -= coeff * Th;
-				//normal bottom
-				A.AddEntry(Ai, Aj - nx, coeff);
+				//if not, normally add to A
+				A.AddEntry(to1D(i, j, nx), to1D(i, j + 1, nx), 1);
 			}
-					
-			//std::cout << "vdf3";
+			else
+			{
+				//if it is, add Th to b
+				this->b[Ai] -= Th;
+
+			}
 			//always account for term of current point
-			A.AddEntry(Ai, Aj, -4*coeff);
+			A.AddEntry(to1D(i, j, nx), to1D(i, j, nx),  -4);
 
 
 		}
 	}
 
+	A.printIt();
 	
-	//for (int i = 0; i < nx; i++)
-	//{
-	//	for (int j = 1; j < ny; j++)
-	//	{
-	//		A.AddEntry(to1D(i, j), to1D(i - 1, j), 1);
+	std::cout <<  "\n ";
 
-	//	}
-	//}
+	for (unsigned int i = 0; i < b.size(); i++)
+	{
+		std::cout << b[i] << " ";
+	}
+
+	for (unsigned int i = 0; i < x.size(); i++)
+	{
+		std::cout << x[i] << " ";
+	}
+
+	
 
 
 	return 0;
@@ -188,7 +243,6 @@ int HeatEquation2D::Setup(std::string inputfile)
 int HeatEquation2D::Solve(std::string soln_prefix)
 {
 
-	std::cout << "SETUP";
 	//set tolerance and call to CGSolver
 	double const tol = 1.0 * pow((double)10.0, -5);
 	//int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x, 
@@ -196,6 +250,27 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 
 	//implement negative definite (-A)u = -b
 
+	this->A.MulConst(-1.0);
+	this->b = constvec_mult(-1.0, this->b);
+
+
+	std::cout << "\n\n";
+	A.printIt();
+
+	std::cout << "\n";
+
+	for (unsigned int i = 0; i < b.size(); i++)
+	{
+		std::cout << b[i] << " ";
+	}
+	std::cout << "\n";
+
+	for (unsigned int i = 0; i < x.size(); i++)
+	{
+		std::cout << x[i] << " ";
+	}
+	std::cout << "\n";
+	
 	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix, *this);
 
 
@@ -227,26 +302,26 @@ std::vector<double> HeatEquation2D::getDims() const
 	return dims;
 }
 
-////translates i,j position in heat system to A's i,j
-//int to1D(int i, int j)
-//{
-//	return wrap(i) + nx * (j - 1);
-//}
-//
-////determines the value of i after wrapping
-//int wrap(int i)
-//{
-//	if (i == nx)
-//	{
-//		return 0;
-//	}
-//	if (i == -1)
-//	{
-//		return nx - 1;
-//	}
-//
-//	return i;
-//}
+//translates i,j position in heat system to A's i,j
+int HeatEquation2D::to1D(const int i, const int j, const int nx)
+{
+	return wrap(i, nx) + nx * (j - 1);
+}
+
+//determines the value of i after wrapping
+int HeatEquation2D::wrap(const int i, const int nx)
+{
+	if (i == nx)
+	{
+		return 0;
+	}
+	if (i == -1)
+	{
+		return nx - 1;
+	}
+
+	return i;
+}
 
 
 	/* TODO: Add any additional public methods you need */

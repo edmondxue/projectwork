@@ -44,11 +44,11 @@ class HeatEquation2D
 	/* Method to get length, width, h for the system;*/
 	std::vector<double> getDims() const;
 
-	////translates i,j position in heat system to A's i,j
-	//int to1D(int i, int j);
+	//translates i,j position in heat system to A's i,j
+	int to1D(const int i, const int j, const int nx);
 
-	////determines the value of i after wrapping
-	//int wrap(int i);
+	//determines the value of i after wrapping
+	int wrap(const int i, const int nx);
 
     /* TODO: Add any additional public methods you need */
 

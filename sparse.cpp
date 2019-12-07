@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> //REMOVE
 #include <vector>
 
 #include "COO2CSR.hpp"
@@ -62,10 +62,40 @@ std::vector<double> SparseMatrix::MulVec(std::vector<double> const& vec)
 	return matvec_mult(this->a, this->i_idx, this->j_idx, vec);
 }
 
+/* Method to perform sparse matrix constant multiplication using CSR formatted matrix */
+void SparseMatrix::MulConst(double const conval)
+{
+
+	//then use function, multiply matrix by arg vec, return
+	matconst_mult(this->a, this->i_idx, this->j_idx, conval);
+}
+
 /* Method to return the dimensions of the sparse matrix*/
 std::vector<int> SparseMatrix::getDims() const
 {
 	std::vector<int> dims = { this->nrows, this->ncols };
 	return dims;
+}
+
+void SparseMatrix::printIt()
+{
+	for (unsigned int i = 0; i < this->i_idx.size(); i++)
+	{
+		std::cout << i_idx[i] << " ";
+	}
+
+	std::cout << "\n";
+
+	for (unsigned int i = 0; i < this->j_idx.size(); i++)
+	{
+		std::cout << j_idx[i] << " ";
+	}
+
+	std::cout << "\n";
+	for (unsigned int i = 0; i < this->a.size(); i++)
+	{
+		std::cout << a[i] << " ";
+	}
+
 }
 /* TODO: Add any additional public methods you need */
