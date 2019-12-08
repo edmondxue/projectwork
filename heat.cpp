@@ -302,26 +302,7 @@ std::vector<double> HeatEquation2D::getDims() const
 	return dims;
 }
 
-//translates i,j position in heat system to A's i,j
-int HeatEquation2D::to1D(const int i, const int j, const int nx)
-{
-	return wrap(i, nx) + nx * (j - 1);
-}
 
-//determines the value of i after wrapping
-int HeatEquation2D::wrap(const int i, const int nx)
-{
-	if (i == nx)
-	{
-		return 0;
-	}
-	if (i == -1)
-	{
-		return nx - 1;
-	}
-
-	return i;
-}
 
 
 	/* TODO: Add any additional public methods you need */

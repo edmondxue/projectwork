@@ -33,5 +33,11 @@ std::vector<double> constvec_mult(double const con, std::vector<double> const& x
 //calculate the l2 norm of a vector
 double L2norm(std::vector<double> const& x);
 
+//translates i,j position in heat system to A's i,j
+int to1D(const int i, const int j, const int nx);
+
+//determines the value of i after wrapping
+int wrap(const int i, const int nx);
+
 
 #endif /* MATVECOPS_HPP */

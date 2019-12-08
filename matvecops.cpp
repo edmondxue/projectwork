@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream> //REMOVE
 #include <vector>
 
 #include <algorithm>
@@ -35,7 +36,9 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 								std::vector<int> const& col_idx,
 								std::vector<double> const& x)
 {
-	std::vector<double> prod (x.size());
+	std::cout << "inside Matvecmult: ";
+
+	std::vector<double> prod (x.size(), 0);
 
 	//index of product should match corresponding row
 	//in csr, col index matches value index
@@ -45,7 +48,9 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 		for(int j = row_ptr[i]; j < row_ptr[i+1]; j++)
 		{
 			prod[i] += val[j] * x[col_idx[j]];
+			
 		}
+		std::cout << prod[i] << " ";
 	}
 
 	return prod;
@@ -100,6 +105,26 @@ double L2norm(std::vector<double> const& x)
     return sqrt(summing);
 }
 
+//translates i,j position in heat system to A's i,j
+int to1D(const int i, const int j, const int nx)
+{
+	return wrap(i, nx) + nx * (j - 1);
+}
+
+//determines the value of i after wrapping
+int wrap(const int i, const int nx)
+{
+	if (i == nx)
+	{
+		return 0;
+	}
+	if (i == -1)
+	{
+		return nx - 1;
+	}
+
+	return i;
+}
 
 
 

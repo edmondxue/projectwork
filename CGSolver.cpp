@@ -22,7 +22,6 @@
 int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double>& x,
 	const double tol, const std::string soln_prefix, HeatEquation2D const & sys)
 {
-\
 	//initialize
 	std::vector<double> u, u_new, r, r_new, p, p_new;
 	double L2normr0, L2normr, alpha, beta;
@@ -30,9 +29,27 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 
 	//first convert to CSR format
 	mat.ConvertToCSR();
-	
+
+
+
 	//begin CG algo
 	u = x;
+
+	//a
+	std::cout << "DEBUG\n\n";
+
+	std::cout << "RESULTS OF  MULVEC \n";
+	std::vector <double> a = mat.MulVec(u);
+
+	std::cout << "SIZE OF A: " << a.size() << " \n";
+	for (unsigned int i = 0; i < a.size(); i++)
+	{
+		std::cout << a[i] << " ";
+	}
+	std::cout << "END OF  MULVEC \n";
+
+	//a
+
 	r = vec_subtract(b, mat.MulVec(u));
 	L2normr0 = L2norm(r);
 	p = r;
@@ -42,7 +59,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 
 	while(niter < nitermax)
 	{
-	
+		std::cout << "block 1\n";
 		alpha = dot_prod(r, r)/dot_prod(p, mat.MulVec(p));
 		u_new = vec_add(u, constvec_mult(alpha,p));
 		r_new = vec_subtract(r, constvec_mult(alpha, mat.MulVec(p)));
@@ -54,8 +71,13 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 			break;
 		}
 
+		std::cout << "block 2\n";
+		std::cout << "set beta\n";
 		beta = dot_prod(r_new, r_new)/dot_prod(r,r);
+
+		std::cout << "set p new\n";
 		p_new = vec_add(r_new, constvec_mult(beta,p));
+		std::cout << "end block 2\n";
 
 		//update variables
 		r = r_new;
@@ -69,6 +91,7 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 			printSolnFile(soln_prefix, x, niter, mat, sys);
 		}
 
+		std::cout << " inc niter \n";
 		niter += 1;
 	}
 
@@ -114,6 +137,10 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	what this means is j is 1 greater than its reference
 
 	also, j and i order of looping matters*/
+
+	std::cout << "printing loop\n";
+
+	std::cout << nrows << " " << ncols;
 	for (int j = 0; j <= nrows; j++)
 	{			
 		for (int i = 0; i <= ncols; i++)
@@ -125,23 +152,24 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 				Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
 				soln.push_back(Tx);
 			}
-			//if j = nrows-1, fill in top BC Th's 
-			else if (j == nrows - 1)
+			//if j = nrows, fill in top BC Th's 
+			else if (j == nrows)
 			{
 				soln.push_back(Th);
 			}
 			//otherwise it's an interior row
 			else
 			{
-				//last col interior, copy periodic BC
-				if (i == ncols - 1)
-				{
-					soln.push_back(x[(j-1) * (ncols) + 1]);
-				}
-				else
-				{
-					soln.push_back(x[ncols * (j - 1) + i]);
-				}
+				////last col interior, copy periodic BC
+				//if (i == ncols)
+				//{
+				//	soln.push_back(x[(j-1) * (ncols) + 1]);
+				//}
+				//else
+				//{
+				//	soln.push_back(x[ncols * (j - 1) + i]);
+				//}
+				soln.push_back(x[to1D(i,j,ncols)]);
 			}
 
 		}

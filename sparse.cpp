@@ -59,7 +59,11 @@ std::vector<double> SparseMatrix::MulVec(std::vector<double> const& vec)
 	//std::cout << j_idx.size() << " \n";
 
 	//then use function, multiply matrix by arg vec, return
-	return matvec_mult(this->a, this->i_idx, this->j_idx, vec);
+
+	std::vector <double> prod;
+	prod = matvec_mult(this->a, this->i_idx, this->j_idx, vec);
+
+	return prod;
 }
 
 /* Method to perform sparse matrix constant multiplication using CSR formatted matrix */
