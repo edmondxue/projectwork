@@ -12,9 +12,6 @@ class SparseMatrix
     int ncols;
     int nrows;
 
-    /* TODO: Add any additional private data attributes and/or methods  you need */
-
-
   public:
     /* Method to modify sparse matrix dimensions */
     void Resize(const int nrows, const int ncols);
@@ -33,9 +30,6 @@ class SparseMatrix
 
 	/* Method to return the dimensions of the sparse matrix*/
 	std::vector<int> getDims() const;
-
-    /* TODO: Add any additional public methods you need */
-	void SparseMatrix::printIt();
     
 };
 

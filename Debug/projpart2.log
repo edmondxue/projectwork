@@ -1,5 +1,7 @@
 ﻿  CGSolver.cpp
   heat.cpp
+  main.cpp
+  matvecops.cpp
   sparse.cpp
   Generating Code...
 LINK : warning LNK4044: unrecognized option '/Za'; ignored
