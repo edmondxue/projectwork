@@ -128,8 +128,8 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 
 	double len = sys.getDims()[0];
 
-	int nrows = mat.getDims()[1];
-	int ncols = mat.getDims()[0];
+	int nrows = mat.getDims()[0];
+	int ncols = mat.getDims()[1];
 
 	//std::vector <double> soln((ncols+1) * (nrows+1));
 	std::vector <double> soln;

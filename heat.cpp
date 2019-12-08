@@ -57,7 +57,7 @@ int HeatEquation2D::Setup(std::string inputfile)
 	const int ny = (int) (width / h);
 		
 	//const int n_unk = (int) ((nx - 1) * (ny - 1) + (nx - 1));
-	A.Resize(nx, ny);
+	A.Resize(ny, nx);
 
 
 

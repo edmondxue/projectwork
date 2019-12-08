@@ -9,8 +9,8 @@
 	/* Method to modify sparse matrix dimensions */
 void SparseMatrix::Resize(const int nrows, const int ncols)
 {
-	this->ncols = ncols;
 	this->nrows = nrows;
+	this->ncols = ncols;
 }
 
 /* Method to add entry to matrix in COO format */
