@@ -83,8 +83,6 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 		//if doesn't converge, return -1
 		return -1;
 	}
-
-	
 }
 
 /*Function that fills in boundary conditions left out of A and prints the

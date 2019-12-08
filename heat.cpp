@@ -50,44 +50,13 @@ int HeatEquation2D::Setup(std::string inputfile)
 	}
 		
 	//first, resize the Sparse Matrix
-	//nrows and ncols are actually ndivs, add 1 to capture indices
-	//ncols = num unknowns = num interior + num periodic/2
-	//nrows = num equations = num unknowns?
 	const int nx = (int) (len / h);
 	const int ny = (int) (width / h);
 		
-	//const int n_unk = (int) ((nx - 1) * (ny - 1) + (nx - 1));
 	A.Resize(ny, nx);
-
-
 
 	//set const coeff
 	const double coeff = 1 / pow(h, 2.0);
-	////loop through all interior points i,j
-	//for (int i = 0; i < nrows + 1; i++)
-	//{
-	//	for (int j = 0; j < ncols + 1; j++)
-	//	{
-	//		//for isothermal BC's
-	//		//top
-	//		if (i == 0)
-	//		{
-	//			//at the j'th 
-	//			A.AddEntry(j, j, Th);
-	//		}
-	//		//bottom
-	//		if (i == nrows)
-	//		{
-	//			double Tx = -Tc * (exp(-10 * pow(j - (len / 2), 2.0)) - 2);
-	//			A.AddEntry(width - 1, j, Tx);
-	//		}
-
-
-	//		//check boundaries
-	//		if((i-1) < 0
-	//		A.AddEntry(coeff, )
-	//	}
-	//}
 
 	//form initial product vector b
 	this->b.resize((ny - 1) * nx, 0);
@@ -132,8 +101,6 @@ int HeatEquation2D::Setup(std::string inputfile)
 			}
 			//always account for term of current point
 			A.AddEntry(to1D(i, j, nx), to1D(i, j, nx),  -4);
-
-
 		}
 	}
 
