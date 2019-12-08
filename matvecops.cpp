@@ -36,7 +36,7 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 								std::vector<int> const& col_idx,
 								std::vector<double> const& x)
 {
-	std::cout << "inside Matvecmult: ";
+	//std::cout << "inside Matvecmult: ";
 
 	std::vector<double> prod (x.size(), 0);
 
@@ -50,7 +50,7 @@ std::vector<double> matvec_mult(std::vector<double> const& val,
 			prod[i] += val[j] * x[col_idx[j]];
 			
 		}
-		std::cout << prod[i] << " ";
+		//std::cout << prod[i] << " ";
 	}
 
 	return prod;

@@ -219,19 +219,19 @@ int HeatEquation2D::Setup(std::string inputfile)
 		}
 	}
 
-	A.printIt();
-	
-	std::cout <<  "\n ";
+	//A.printIt();
+	//
+	//std::cout <<  "\n ";
 
-	for (unsigned int i = 0; i < b.size(); i++)
-	{
-		std::cout << b[i] << " ";
-	}
+	//for (unsigned int i = 0; i < b.size(); i++)
+	//{
+	//	std::cout << b[i] << " ";
+	//}
 
-	for (unsigned int i = 0; i < x.size(); i++)
-	{
-		std::cout << x[i] << " ";
-	}
+	//for (unsigned int i = 0; i < x.size(); i++)
+	//{
+	//	std::cout << x[i] << " ";
+	//}
 
 	
 
@@ -254,7 +254,7 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 	this->b = constvec_mult(-1.0, this->b);
 
 
-	std::cout << "\n\n";
+	/*std::cout << "\n\n";
 	A.printIt();
 
 	std::cout << "\n";
@@ -269,7 +269,7 @@ int HeatEquation2D::Solve(std::string soln_prefix)
 	{
 		std::cout << x[i] << " ";
 	}
-	std::cout << "\n";
+	std::cout << "\n";*/
 	
 	int iter = CGSolver(this->A, this->b, this->x, tol, soln_prefix, *this);
 

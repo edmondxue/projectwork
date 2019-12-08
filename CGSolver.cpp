@@ -42,10 +42,10 @@ int CGSolver(SparseMatrix& mat, std::vector<double> const& b, std::vector<double
 	std::vector <double> a = mat.MulVec(u);
 
 	std::cout << "SIZE OF A: " << a.size() << " \n";
-	for (unsigned int i = 0; i < a.size(); i++)
-	{
-		std::cout << a[i] << " ";
-	}
+	//for (unsigned int i = 0; i < a.size(); i++)
+	//{
+	//	std::cout << a[i] << " ";
+	//}
 	std::cout << "END OF  MULVEC \n";
 
 	//a
@@ -120,7 +120,6 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 {
 	/*use the x vector to create a solution that 
 	contains the isothermal, periodic boundary points*/
-	std::vector <double> soln;
 
 	//assign system, matrix properties
 	double Tc = sys.getTemps()[0];
@@ -129,9 +128,11 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 
 	double len = sys.getDims()[0];
 
-	int nrows = mat.getDims()[0];
-	int ncols = mat.getDims()[1];
+	int nrows = mat.getDims()[1];
+	int ncols = mat.getDims()[0];
 
+	//std::vector <double> soln((ncols+1) * (nrows+1));
+	std::vector <double> soln;
 
 	/*x vector of form: [u(0,1), u(1,1)..]
 	what this means is j is 1 greater than its reference
@@ -139,6 +140,15 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 	also, j and i order of looping matters*/
 
 	std::cout << "printing loop\n";
+	
+
+	//std::cout << "This is x: \n\n";
+	//for (unsigned int i = 0; i < x.size(); i++)
+	//{
+	//	std::cout << x[i] << " ";
+	//}
+	//std::cout << " \n\n";
+	
 
 	std::cout << nrows << " " << ncols;
 	for (int j = 0; j <= nrows; j++)
@@ -151,11 +161,13 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 			{
 				Tx = -Tc * (exp(-10 * pow(i - (len / 2), 2.0)) - 2);
 				soln.push_back(Tx);
+				//soln[to1D(i, j, ncols)] = Tx;
 			}
 			//if j = nrows, fill in top BC Th's 
 			else if (j == nrows)
 			{
 				soln.push_back(Th);
+				//soln[to1D(i, j, ncols)] = Th;
 			}
 			//otherwise it's an interior row
 			else
@@ -170,10 +182,17 @@ int printSolnFile(const std::string soln_prefix, std::vector<double> const& x,
 				//	soln.push_back(x[ncols * (j - 1) + i]);
 				//}
 				soln.push_back(x[to1D(i,j,ncols)]);
+				//soln[to1D(i, j, ncols)] = x[to1D(i, j, ncols)];
 			}
-
 		}
+		//std::cout << " \n\n";
+		//for (unsigned int i = 0; i < soln.size(); i++)
+		//{
+		//	std::cout << soln[i] << " ";
+		//}
 	}
+
+	std::cout << "finished writing soln\n";
 	
 	//format the niter for filename
 	std::stringstream niter_str;
